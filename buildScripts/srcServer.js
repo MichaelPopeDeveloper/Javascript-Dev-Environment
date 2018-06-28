@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import open from 'open';
 import webpack from 'webpack';
+import webpackDevMiddleware from 'webpack-dev-middleware';
 import config from '../webpack.config.dev';
 
 /* eslint-disable no-console  */
@@ -10,9 +11,9 @@ const port = 4050;
 const app = express();
 const compiler = webpack(config);
 
-app.use(require('webpack-dev-middleware')(compiler, {
+app.use(webpackDevMiddleware(compiler, {
   noInfo: true,
-  publicPath: config.output.publicPath
+  publicPath: config.output.publicPath,
 }));
 
 app.get('/', (req, res) => {
@@ -23,6 +24,6 @@ app.listen(port, (err) => {
   if (err) {
     console.log(err);
   } else {
-    open('http://localhost:' + port);
+    open(`http://localhost:${port}`);
   }
 });
